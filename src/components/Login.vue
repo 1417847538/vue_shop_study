@@ -1,5 +1,6 @@
 <template>
-  <div class="login_container">
+  <div class="login_container"
+       @keyup.enter="login">
     <div class="login_box">
       <!-- 头像区域 -->
       <div class="userimg_box">
@@ -13,16 +14,15 @@
                :rules="rules">
         <!-- 用户名 -->
         <el-form-item prop="username">
-          <el-input prefix-icon='iconfont icon-office-supplies'
+          <el-input prefix-icon='iconfont icon-user'
                     v-model="form.username"></el-input>
         </el-form-item>
         <!-- 密码 -->
         <el-form-item prefix-icon
                       prop="password">
-          <el-input prefix-icon="iconfont icon-password"
+          <el-input prefix-icon="iconfont icon-3702mima"
                     v-model="form.password"
-                    type="password"
-                    @keyup.enter.native="login"></el-input>
+                    type="password"></el-input>
         </el-form-item>
         <!-- 按钮区域 -->
         <el-form-item class='btns'>
@@ -44,8 +44,8 @@ export default {
   data () {
     return {
       form: {
-        username: '',
-        password: ''
+        username: 'admin',
+        password: '123456'
       },
       rules: {
         username: [{ required: true, message: '请输入账号', trigger: 'blur' }, { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }],

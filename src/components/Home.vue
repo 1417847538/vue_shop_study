@@ -10,25 +10,41 @@
     <!-- 主体区域 -->
     <el-container>
       <!-- 侧边栏 -->
-      <el-aside width="200px">
+      <el-aside :width="isCollapse
+                ?'64px':'200px'">
+        <div class="toggle_button"
+             @click="toggleFold">|||</div>
         <el-menu background-color="#333744"
-                 text-color="#fff">
-          <el-submenu index="1">
+                 text-color="#fff"
+                 active-text-color="#4098ff"
+                 unique-opened
+                 router
+                 :collapse=isCollapse
+                 :collapse-transition=false
+                 :default-active=activePath>
+          <el-submenu :index="item.id+''"
+                      v-for="item in menuList"
+                      :key='item.id'>
+
             <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>导航一</span>
+              <i :class="iconsObj[item.id]"></i>
+              <span>{{item.authName}}</span>
             </template>
 
-            <el-menu-item index="1-4-1">
-              <template>
-                <i class="el-icon-location"></i>
-              </template>
+            <el-menu-item :index="'/'+subitem.path"
+                          v-for='subitem in item.children'
+                          :key="subitem.id"
+                          @click="saveNav('/'+subitem.path)">
+              <i class="el-icon-menu"></i>
+              <span>{{subitem.authName}}</span>
             </el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>
       <!-- 右侧主体内容 -->
-      <el-main>Main</el-main>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
 
   </el-container>
@@ -40,21 +56,42 @@ export default {
   name: 'home',
   data () {
     return {
-      menuList: []
+      menuList: [],
+      iconsObj: {
+        125: 'iconfont icon-users',
+        103: 'iconfont icon-tijikongjian',
+        101: 'iconfont icon-shangpin',
+        102: 'iconfont icon-danju',
+        145: 'iconfont icon-baobiao'
+      },
+      isCollapse: false,
+      activePath: ''
     }
   },
   created () {
     this.getMenuList()
+    this.activePath = window.sessionStorage.getItem('activePath')
   },
   methods: {
     logout () {
       window.sessionStorage.clear()
       this.$router.push('/login')
     },
+    // 获取左侧所有菜单
     async getMenuList () {
       const { data: res } = await this.$http.get('/menus')
       if (res.meta.status !== 200) { return this.$message.error(res.meta.msg) }
       this.menuList = res.data
+      console.log(this.menuList)
+    },
+    // 点击按钮，切换菜单折叠与展开
+    toggleFold () {
+      this.isCollapse = !this.isCollapse
+    },
+    // 保存激活状态
+    saveNav (activePath) {
+      window.sessionStorage.setItem('activePath', activePath)
+      this.activePath = window.sessionStorage.getItem('activePath')
     }
   }
 }
@@ -81,13 +118,28 @@ export default {
   margin-left: 20px;
 }
 .el-header img {
-  width: 50px;
-  height: 50px;
+  width: 64px;
+  height: 64px;
 }
 .el-aside {
   background-color: #333744;
 }
 .el-main {
   background-color: #eaedf1;
+}
+.toggle_button {
+  background-color: #4a5064;
+  font-size: 10px;
+  color: #fff;
+  line-height: 24px;
+  text-align: center;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+.el-menu {
+  border-right: 0 !important;
+}
+.iconfont {
+  margin-right: 10px;
 }
 </style>
