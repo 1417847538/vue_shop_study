@@ -7,7 +7,7 @@
       <el-breadcrumb-item>角色列表</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-card>
+    <el-card class="box-card">
       <!-- 添加角色区域 -->
       <el-row>
         <el-col>
@@ -99,13 +99,18 @@
       <!-- 内容主题区 -->
       <el-form :model="addForm"
                status-icon
+               :rules="addFormRules"
                ref="addFormRef"
                label-width="80px">
-        <el-form-item label="角色名称">
-          <el-input v-model="addForm.roleName"></el-input>
+        <el-form-item label="角色名称"
+                      prop="roleName">
+          <el-input v-model="addForm.roleName"
+                    clearable></el-input>
         </el-form-item>
-        <el-form-item label="角色描述">
-          <el-input v-model="addForm.roleDesc"></el-input>
+        <el-form-item label="角色描述"
+                      prop="roleDesc">
+          <el-input v-model="addForm.roleDesc"
+                    clearable></el-input>
         </el-form-item>
       </el-form>
       <!-- 底部按钮区 -->
@@ -119,17 +124,23 @@
     <!-- 编辑角色对话框 -->
     <el-dialog title="修改角色"
                :visible.sync="editDialogVisible"
-               width="30%">
+               width="30%"
+               @close="editDialogClosed">
       <!-- 内容主题区 -->
       <el-form :model="editForm"
                status-icon
+               :rules="editFormRules"
                ref="editFormRef"
                label-width="80px">
-        <el-form-item label="角色名称">
-          <el-input v-model="editForm.roleName"></el-input>
+        <el-form-item label="角色名称"
+                      prop="roleName">
+          <el-input v-model="editForm.roleName"
+                    clearable></el-input>
         </el-form-item>
-        <el-form-item label="角色描述">
-          <el-input v-model="editForm.roleDesc"></el-input>
+        <el-form-item label="角色描述"
+                      prop="roleDesc">
+          <el-input v-model="editForm.roleDesc"
+                    clearable></el-input>
         </el-form-item>
       </el-form>
       <!-- 底部按钮区 -->
@@ -171,9 +182,31 @@ export default {
     return {
       rolesList: [],
       addDialogVisible: false,
-      addForm: {},
+      addForm: {
+        roleName: '',
+        roleDesc: ''
+      },
+      addFormRules: {
+        roleName: [
+          { required: true, message: '请输入角色名', trigger: 'blur' }
+        ],
+        roleDesc: [
+          { required: true, message: '请对该角色进行描述', trigger: 'blur' }
+        ]
+      },
       editDialogVisible: false,
-      editForm: {},
+      editForm: {
+        roleName: '',
+        roleDesc: ''
+      },
+      editFormRules: {
+        roleName: [
+          { required: true, message: '请输入角色名', trigger: 'blur' }
+        ],
+        roleDesc: [
+          { required: true, message: '请对该角色进行描述', trigger: 'blur' }
+        ]
+      },
       setDialogVisible: false,
       setRightList: [],
       treeProps: {
@@ -201,14 +234,17 @@ export default {
     addDialogClosed () {
       this.$refs.addFormRef.resetFields()
     },
-    async addRole () {
-      const { data: res } = await this.$http.post('/roles', this.addForm)
-      if (res.meta.status !== 201) {
-        return this.$message.error('添加角色失败!')
-      }
-      this.$message.success('添加角色成功!')
-      this.addDialogVisible = false
-      this.getRolesList()
+    addRole () {
+      this.$refs.addFormRef.validate(async (valid) => {
+        if (!valid) { return false }
+        const { data: res } = await this.$http.post('/roles', this.addForm)
+        if (res.meta.status !== 201) {
+          return this.$message.error('添加角色失败!')
+        }
+        this.$message.success('添加角色成功!')
+        this.addDialogVisible = false
+        this.getRolesList()
+      })
     },
     // 编辑角色
     async editRoleDialog (nowid) {
@@ -220,14 +256,20 @@ export default {
       this.editDialogVisible = true
     },
 
-    async addedit () {
-      const { data: res } = await this.$http.put('/roles/' + this.editForm.roleId, { roleName: this.editForm.roleName, roleDesc: this.editForm.roleDesc })
-      if (res.meta.status !== 200) {
-        return this.$message.error('编辑角色失败!')
-      }
-      this.$message.success('编辑角色成功!')
-      this.editDialogVisible = false
-      this.getRolesList()
+    addedit () {
+      this.$refs.editFormRef.validate(async (valid) => {
+        if (!valid) { return false }
+        const { data: res } = await this.$http.put('/roles/' + this.editForm.roleId, { roleName: this.editForm.roleName, roleDesc: this.editForm.roleDesc })
+        if (res.meta.status !== 200) {
+          return this.$message.error('编辑角色失败!')
+        }
+        this.$message.success('编辑角色成功!')
+        this.editDialogVisible = false
+        this.getRolesList()
+      })
+    },
+    editDialogClosed () {
+      this.$refs.editFormRef.resetFields()
     },
     // 删除角色
     async removeRole (id) {

@@ -57,7 +57,6 @@ export default {
       if (res.meta.status !== 200) {
         return this.$message.error('获取权限管理列表失败!')
       }
-      this.$message.success('获取权限管理列表成功!')
       this.rightsList = res.data
     }
   }

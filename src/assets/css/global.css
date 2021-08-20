@@ -15,8 +15,13 @@ html,body,#app{
 	margin-top: 20px;
 	font-size: 14px;
 }
-
+.zk-table{
+	margin-top: 20px;
+}
 .el-pagination{
 	margin-top: 20px;
 	text-align: center;
+}
+.el-cascader-menu{
+	height: 250px;
 }

@@ -186,7 +186,7 @@
 
 <script>
 export default {
-  name: 'Users',
+  name: 'users',
 
   data () {
     // 验证合法邮箱
