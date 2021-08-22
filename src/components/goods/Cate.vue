@@ -30,7 +30,7 @@
              style="color:lightgreen"></i>
           <i class="el-icon-error"
              v-else
-             style="red"></i>
+             style="color: red;"></i>
         </template>
         <!-- 排序 -->
         <template slot="sort"
@@ -89,7 +89,8 @@
                        :options="parentCateList"
                        :props="cascaderProps"
                        @change="parentCateChange"
-                       clearable></el-cascader>
+                       clearable>
+          </el-cascader>
         </el-form-item>
       </el-form>
       <!-- 底部按钮区 -->
@@ -123,6 +124,7 @@
         <el-button type="primary"
                    @click="addEditCate">确 定</el-button>
       </span>
+
     </el-dialog>
   </div>
 </template>
@@ -184,7 +186,6 @@ export default {
       editFormRules: {
         cat_name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }]
       }
-
     }
   },
   created () {
