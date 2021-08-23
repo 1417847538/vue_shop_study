@@ -6,6 +6,7 @@
       <el-breadcrumb-item>商品管理</el-breadcrumb-item>
       <el-breadcrumb-item>商品列表</el-breadcrumb-item>
     </el-breadcrumb>
+
     <el-card class="box-card">
       <el-row :gutter="20">
         <el-col :span='8'>
@@ -47,7 +48,7 @@
                          width="190px"
                          align="center">
           <template slot-scope="scope">
-            {{scope.row.add_time | dateFormat()}}
+            {{scope.row.add_time | dateFormat}}
           </template>
         </el-table-column>
         <el-table-column label="操作"
@@ -57,7 +58,7 @@
             <el-button type="primary"
                        icon="el-icon-edit"
                        size="mini"
-                       @click="showEditDialog(scope.row.goods_id)">编辑</el-button>
+                       @click="goEditPage">编辑</el-button>
             <el-button type="danger"
                        icon="el-icon-delete"
                        size="mini"
@@ -112,6 +113,7 @@ export default {
     handleCurrentChange (newpage) {
       this.goodsInfo.pagenum = newpage
     },
+
     // 删除商品
     async removeGoods (nowid) {
       const confirmRes = await this.$confirm('此操作将永久删除该分类, 是否继续?', '提示',
@@ -134,6 +136,10 @@ export default {
     },
     goAddPage () {
       this.$router.push('/goods/add')
+    },
+    // 编辑商品
+    goEditPage () {
+      this.$router.push('/goods/edit')
     }
   },
   watch: {
