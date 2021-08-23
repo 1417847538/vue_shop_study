@@ -7,10 +7,10 @@ import './assets/fonts/iconfont.css'
 import axios from 'axios'
 import TreeTable from 'vue-table-with-tree-grid'
 import VueQuillEditor from 'vue-quill-editor'
-
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
+import * as echarts from 'echarts'
 
 Vue.config.productionTip = false
 
@@ -23,6 +23,7 @@ axios.interceptors.request.use(config => {
   return config
 })
 
+Vue.prototype.$echarts = echarts
 Vue.component('tree-table', TreeTable)
 // 全局注册富文本编辑器
 Vue.use(VueQuillEditor)
