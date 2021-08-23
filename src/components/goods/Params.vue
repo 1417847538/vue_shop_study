@@ -79,8 +79,7 @@
           </el-table>
         </el-tab-pane>
         <!-- 静态列表属性 -->
-        <el-tab-pane label="
-                           静态属性"
+        <el-tab-pane label="静态属性"
                      name="only">
           <el-button type="primary"
                      :disabled='isDisabled'
@@ -257,7 +256,6 @@ export default {
         item.inputVisible = false
         item.inputValue = ''
       })
-      console.log(res.data)
       if (this.activeName === 'many') {
         this.manyList = res.data
       } else {
@@ -387,9 +385,7 @@ export default {
 .el-cascader {
   margin-left: 10px;
 }
-.el-tag {
-  margin: 10px;
-}
+
 .input-new-tag {
   width: 90px;
 }

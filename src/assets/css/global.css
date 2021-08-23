@@ -25,3 +25,12 @@ html,body,#app{
 .el-cascader-menu{
 	height: 250px;
 }
+.el-steps{
+	margin: 20px 0;
+}
+.el-tag {
+  margin: 10px;
+}
+.ql-editor{
+	min-height:300px ;
+}

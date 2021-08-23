@@ -8,7 +8,8 @@ import Rights from '../components/power/Rights'
 import Roles from '../components/power/Roles'
 import Cate from '../components/goods/Cate'
 import Params from '../components/goods/Params'
-
+import List from '../components/goods/List'
+import Add from '../components/goods/Add'
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -49,6 +50,14 @@ const router = new VueRouter({
         {
           path: '/params',
           component: Params
+        },
+        {
+          path: '/goods',
+          component: List
+        },
+        {
+          path: '/goods/add',
+          component: Add
         }
       ]
     }
@@ -60,7 +69,9 @@ router.beforeEach((to, from, next) => {
     return next()
   }
   const tokenStr = window.sessionStorage.getItem('token')
+
   if (!tokenStr) {
+    alert('你还没有登陆')
     return next('/login')
   }
   next()
